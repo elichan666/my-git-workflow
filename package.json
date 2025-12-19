@@ -1,0 +1,44 @@
+{
+  "name": "my-git-workflow",
+  "version": "1.0.0",
+  "description": "Git 分支合并 CLI 工具，支持自动合并到 test/main 分支",
+  "main": "index.js",
+  "bin": {
+    "git-workflow": "./bin/cli.js",
+    "to-test": "./bin/cli.js",
+    "to-main": "./bin/cli.js"
+  },
+  "scripts": {
+    "to-test": "node bin/cli.js to-test",
+    "to-main": "node bin/cli.js to-main",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "git",
+    "workflow",
+    "merge",
+    "cli",
+    "branch",
+    "test",
+    "main"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elichan666/my-git-workflow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/elichan666/my-git-workflow/issues"
+  },
+  "homepage": "https://github.com/elichan666/my-git-workflow#readme",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "inquirer": "^8.2.6",
+    "simple-git": "^3.20.0"
+  },
+  "preferGlobal": true,
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}

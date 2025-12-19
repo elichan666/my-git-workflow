@@ -1,0 +1,9 @@
+{
+  "pullStrategy": "rebase",
+  "mergeStrategy": "no-ff",
+  "autoSwitchBack": true,
+  "allowForcePush": false,
+  "enforceConventionalCommits": false,
+  "branchPrefixes": ["feature/", "bugfix/", "hotfix/"]
+}
+

@@ -1,0 +1,12 @@
+node_modules/
+*.log
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# docs 目录（如果包含敏感信息）
+docs/
+
