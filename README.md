@@ -4,29 +4,40 @@
 
 ## 快速开始
 
-### 从 GitHub 安装（推荐）
+### 在其他项目中安装使用
+
+**步骤 1: 安装**
 
 ```bash
-# 安装
+# 在目标项目中执行
 npm install git+https://github.com/elichan666/my-git-workflow.git
+```
 
-# 在 package.json 中添加 scripts
+**步骤 2: 配置 package.json**
+
+```json
 {
   "scripts": {
     "to-test": "git-workflow to-test",
     "to-main": "git-workflow to-main"
   }
 }
-
-# 使用
-npm run to-test
 ```
+
+**步骤 3: 使用**
+
+```bash
+npm run to-test   # 合并到 test 分支
+npm run to-main   # 合并到 main 分支
+```
+
+📖 详细安装指南请查看 [INSTALL.md](./INSTALL.md)
 
 ### 本地开发（使用 npm link）
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/YOUR_USERNAME/my-git-workflow.git
+git clone https://github.com/elichan666/my-git-workflow.git
 cd my-git-workflow
 npm install
 npm link
