@@ -2,53 +2,6 @@
 
 一个安全、可控的 Git 分支合并 CLI 工具，支持自动将当前分支合并到 `test` 或 `main` 分支并触发 CI。
 
-## 快速开始
-
-### 在其他项目中安装使用
-
-**步骤 1: 安装**
-
-```bash
-# 在目标项目中执行
-npm install git+https://github.com/elichan666/my-git-workflow.git
-```
-
-**步骤 2: 配置 package.json**
-
-```json
-{
-  "scripts": {
-    "to-test": "git-workflow to-test",
-    "to-main": "git-workflow to-main"
-  }
-}
-```
-
-**步骤 3: 使用**
-
-```bash
-npm run to-test   # 合并到 test 分支
-npm run to-main   # 合并到 main 分支
-```
-
-📖 详细安装指南请查看 [INSTALL.md](./INSTALL.md)
-
-### 本地开发（使用 npm link）
-
-```bash
-# 1. 克隆仓库
-git clone https://github.com/elichan666/my-git-workflow.git
-cd my-git-workflow
-npm install
-npm link
-
-# 2. 在目标项目中使用
-cd /path/to/your/project
-npm link my-git-workflow
-```
-
-> **注意**：文档已从 Git 跟踪中排除。如需查看详细文档，请参考本地 `docs/` 目录。
-
 ## 功能特性
 
 - ✅ 自动处理本地变更提交
@@ -58,17 +11,30 @@ npm link my-git-workflow
 - ✅ 可配置的拉取策略（rebase, merge）
 - ✅ 完整的错误处理和回退建议
 - ✅ 清晰的步骤输出和日志
-- ✅ 支持 CI 链接推断（GitHub/GitLab）
 
 ## 安装
 
-### 方式 1: 作为工具库使用（推荐，用于本地开发）
+### 方式 1: 从 Git 仓库安装
 
-在其他项目中使用时，可以使用 `npm link` 进行本地开发：
+```bash
+# 安装
+npm install git+https://github.com/<your-username>/<your-repo>.git
+
+# 在 package.json 中添加 scripts
+{
+  "scripts": {
+    "to-test": "git-workflow to-test",
+    "to-main": "git-workflow to-main"
+  }
+}
+```
+
+### 方式 2: 本地开发（使用 npm link）
 
 ```bash
 # 1. 在工具库目录下执行
 cd <工具库目录>
+npm install
 npm link
 
 # 2. 在目标项目目录下执行
@@ -84,7 +50,7 @@ npm link my-git-workflow
 }
 ```
 
-### 方式 2: 全局安装
+### 方式 3: 全局安装
 
 ```bash
 npm install -g <工具库目录>
@@ -96,16 +62,7 @@ git-workflow to-test
 git-workflow to-main
 ```
 
-### 方式 3: 本地开发
-
-```bash
-# 在工具库目录下
-npm install
-```
-
 ## 使用方法
-
-### 在其他项目中使用
 
 在目标项目的 `package.json` 中添加 scripts 后：
 
@@ -114,39 +71,12 @@ npm run to-test   # 合并到 test 分支
 npm run to-main   # 合并到 main 分支
 ```
 
-### 直接使用命令（全局安装后）
+或全局安装后直接使用：
 
 ```bash
 git-workflow to-test   # 合并到 test 分支
 git-workflow to-main   # 合并到 main 分支
 ```
-
-### 本地开发调试
-
-```bash
-# 在工具库目录下
-npm run to-test        # 正常执行
-npm run to-main        # 正常执行
-```
-
-> **注意**：详细文档已从 Git 跟踪中排除，请参考本地 `docs/` 目录。
-
-## 从 GitHub 安装
-
-```bash
-# 安装
-npm install git+https://github.com/elichan666/my-git-workflow.git
-
-# 在 package.json 中添加 scripts
-{
-  "scripts": {
-    "to-test": "git-workflow to-test",
-    "to-main": "git-workflow to-main"
-  }
-}
-```
-
-> **注意**：详细文档已从 Git 跟踪中排除，请参考本地 `docs/` 目录。
 
 ## 工作流程
 
@@ -171,9 +101,7 @@ npm install git+https://github.com/elichan666/my-git-workflow.git
   "pullStrategy": "rebase",
   "mergeStrategy": "no-ff",
   "autoSwitchBack": true,
-  "allowForcePush": false,
-  "enforceConventionalCommits": false,
-  "branchPrefixes": ["feature/", "bugfix/", "hotfix/"]
+  "skipInteractive": false
 }
 ```
 
@@ -183,8 +111,9 @@ npm install git+https://github.com/elichan666/my-git-workflow.git
 
 ```json
 {
-  "pullStrategy": "merge",
-  "mergeStrategy": "squash"
+  "pullStrategy": "rebase",
+  "mergeStrategy": "no-ff",
+  "skipInteractive": true
 }
 ```
 
@@ -193,9 +122,24 @@ npm install git+https://github.com/elichan666/my-git-workflow.git
 - `pullStrategy`: 拉取策略，可选 `rebase` 或 `merge`，默认 `rebase`
 - `mergeStrategy`: 合并策略，可选 `no-ff`、`ff-only` 或 `squash`，默认 `no-ff`
 - `autoSwitchBack`: 是否自动切换回原分支，默认 `true`
-- `allowForcePush`: 是否允许强制推送，默认 `false`
-- `enforceConventionalCommits`: 是否强制 Conventional Commits 规范，默认 `false`
-- `branchPrefixes`: 开发分支前缀列表，用于识别开发分支
+- `skipInteractive`: 是否跳过交互式选择，直接使用配置的策略，默认 `false`。设置为 `true` 后，将不再询问拉取和合并策略，只需要输入 commit 信息
+
+### 快速配置示例
+
+如果你只想输入 commit 信息，不想每次都选择 merge 和 pull 策略，可以在项目根目录创建 `.git-workflow.json`：
+
+```json
+{
+  "pullStrategy": "rebase",
+  "mergeStrategy": "no-ff",
+  "skipInteractive": true
+}
+```
+
+这样配置后，工具将：
+- 自动使用 `rebase` 策略拉取代码
+- 自动使用 `no-ff` 策略合并分支
+- 不再弹出交互式选择，只需要输入 commit 信息即可
 
 ## 安全策略
 
@@ -274,73 +218,6 @@ npm run to-test
 3. **冲突处理**: 任何步骤遇到冲突都立即退出，交由用户手动处理
 4. **可观测性**: 每一步操作都有清晰的输出和日志
 
-## 开发与调试
-
-### 项目结构
-
-```
-.
-├── bin/
-│   └── cli.js          # CLI 入口
-├── lib/
-│   ├── git.js          # Git 操作封装
-│   ├── validator.js    # 前置校验
-│   ├── prompter.js     # 交互式输入
-│   ├── workflow.js     # 核心流程
-│   └── config.js       # 配置管理
-├── .vscode/
-│   └── launch.json     # VS Code 调试配置
-├── package.json
-├── README.md
-└── docs/               # 文档目录
-    ├── DEBUG.md        # 调试指南
-    ├── SETUP.md        # 安装指南
-    ├── USAGE.md        # 使用指南
-    ├── QUICKSTART.md   # 快速开始
-    ├── GITHUB_PUBLISH.md # GitHub 发布指南
-    └── my.md           # 需求文档
-```
-
-### 调试方法
-
-1. **使用 npm link**（推荐）：
-   ```bash
-   # 在工具库目录
-   npm link
-   
-   # 在目标项目目录
-   npm link my-git-workflow
-   ```
-
-2. **使用 VS Code 调试**：
-   - 打开 `.vscode/launch.json` 中配置的调试任务
-   - 或按 F5 启动调试
-
-3. **使用命令行调试**：
-   ```bash
-   npm run debug:to-test
-   ```
-
-> **注意**：详细文档已从 Git 跟踪中排除，请参考本地 `docs/` 目录。
-
-## 从 GitHub 安装
-
-```bash
-# 安装
-npm install git+https://github.com/elichan666/my-git-workflow.git
-
-# 在 package.json 中添加 scripts
-{
-  "scripts": {
-    "to-test": "git-workflow to-test",
-    "to-main": "git-workflow to-main"
-  }
-}
-```
-
-> **注意**：详细文档已从 Git 跟踪中排除，请参考本地 `docs/` 目录。
-
 ## License
 
 MIT
-
